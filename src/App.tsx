@@ -1,17 +1,20 @@
 import * as React from "react";
 import Cell, { cellValue } from "./Cell";
+import Popup from "./Popup";
 import { callculateWinner } from "./helper";
 
 import "./styles.css";
 
 const { useState } = React;
 
-const App = () => {
-  const [board, setBoard] = useState(Array(9).fill(""));
-  const [moveCount, setMoveCount] = useState(1);
-  const [winner, setWinner] = useState("");
+export type winnerType = cellValue | "Tie";
 
-  const getCellValue = (c: number): cellValue => (c % 2 ? "X" : "O");
+const App = () => {
+  const [board, setBoard] = useState<cellValue[]>(Array(9).fill(""));
+  const [moveCount, setMoveCount] = useState<number>(0);
+  const [winner, setWinner] = useState<winnerType>("");
+
+  const getCellValue = (c: number): cellValue => (c % 2 ? "O" : "X");
 
   const handleClick = (i: number) => {
     if (board[i] || winner) return;
@@ -19,7 +22,15 @@ const App = () => {
     newBoard[i] = getCellValue(moveCount);
     setBoard(newBoard);
     setMoveCount((prev) => prev + 1);
-    setWinner(callculateWinner(newBoard));
+    const xo = callculateWinner(newBoard);
+    setWinner(xo);
+    if (!xo && newBoard.every((c) => c)) setWinner("Tie");
+  };
+
+  const newGameHandle = () => {
+    setBoard(Array(9).fill(""));
+    setMoveCount(0);
+    setWinner("");
   };
 
   return (
@@ -27,7 +38,7 @@ const App = () => {
       {board.map((cell, i) => (
         <Cell key={i} value={cell} onClick={() => handleClick(i)} />
       ))}
-      {winner && <div className="popupContainer"> {winner} </div>}
+      {winner && <Popup winner={winner} newGameHandle={newGameHandle} />}
     </div>
   );
 };
