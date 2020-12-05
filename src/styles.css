@@ -1,0 +1,36 @@
+* {
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: #212121;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.board {
+  width: 80vw;
+  height: 80vh;
+  border: 5px solid white;
+  background-color: white;
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  gap: 5px;
+}
+
+.cell {
+  background-color: grey;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20vh;
+}
+
+.cell:hover {
+  background-color: rgb(156, 156, 156);
+}
